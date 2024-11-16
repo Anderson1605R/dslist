@@ -3,6 +3,7 @@ package br.com.rochadev.dslist.services;
 import br.com.rochadev.dslist.dto.GameAllDTO;
 import br.com.rochadev.dslist.dto.GamesDTO;
 import br.com.rochadev.dslist.entites.Games;
+import br.com.rochadev.dslist.projections.GameMinProjection;
 import br.com.rochadev.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,11 @@ public class GameService {
         return dto;
 
     }
+    @Transactional(readOnly = true)
+    public List<GamesDTO> findByList(Long listId) {
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
+        List<GamesDTO> dto = result.stream().map(GamesDTO::new).toList();
+        return dto;
+    }
+
 }
